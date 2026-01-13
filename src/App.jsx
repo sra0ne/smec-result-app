@@ -1,10 +1,16 @@
 import { useState } from "react";
 import "./App.css";
 import axios from "axios";
+import Input from "./components/Input";
+import Details from "./components/Details";
+import General from "./components/General";
+import Honors from "./components/Honors";
+import Minors from "./components/Minors";
 
 function App() {
   const [rollNo, setRollNo] = useState("");
   const [selectedType, setSelectedType] = useState("general");
+  const [resultType, setResultType] = useState("");
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
 
@@ -30,146 +36,45 @@ function App() {
         headers: headers,
       });
       setData(response.data);
+      setResultType(selectedType);
+      setError("");
     } catch (err) {
       setError("Failed to fetch result");
-      console.log(error);
-    } finally {
+      console.log(err);
+      setData(null);
+      setResultType("");
     }
   };
 
   return (
     <>
-      <form onSubmit={getResult}>
-        <div>
-          <label>Roll No:</label>
-          <input
-            type="text"
-            value={rollNo}
-            onChange={(e) => setRollNo(e.target.value)}
-            required
-          />
-        </div>
+      <Input
+        rollNo={rollNo}
+        setRollNo={setRollNo}
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+        getResult={getResult}
+      />
 
-        <div>
-          <label>Type:</label>
-
-          <label>
-            <input
-              type="radio"
-              name="type"
-              value="general"
-              checked={selectedType === "general"}
-              onChange={(e) => setSelectedType(e.target.value)}
-            />
-            General
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="type"
-              value="HONORS"
-              checked={selectedType === "HONORS"}
-              onChange={(e) => setSelectedType(e.target.value)}
-            />
-            Honors
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="type"
-              value="MINORS"
-              checked={selectedType === "MINORS"}
-              onChange={(e) => setSelectedType(e.target.value)}
-            />
-            Minors
-          </label>
-        </div>
-        <button type="submit">Get Result</button>
-      </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       {data && (
-        <div>
-          <h2>Student Details</h2>
-
-          <img src={data.student.photo} alt="student" width="120" />
-
-          <p>
-            <b>Name:</b> {data.student.fullName}
-          </p>
-          <p>
-            <b>Roll No:</b> {data.student.rollNo}
-          </p>
-          <p>
-            <b>Course:</b> {data.course.displayName}
-          </p>
-          <p>
-            <b>Branch:</b> {data.program.branchName}
-          </p>
-          {data?.cgpa && (
-            <p>
-              <b>CGPA:</b> {data.cgpa}
-            </p>
-          )}
-        </div>
+        <Details
+          student={data.student}
+          course={data.course}
+          program={data.program}
+          cgpa={data.cgpa}
+        />
       )}
-      {data?.results?.map((semester) => (
-        <div key={semester.semNo}>
-          <h3>Semester {semester.semNo}</h3>
-          <p>SGPA: {semester.sgpa}</p>
 
-          <table border="1" cellPadding="6">
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Code</th>
-                <th>Credits</th>
-                <th>Grade</th>
-                <th>Grade Points</th>
-              </tr>
-            </thead>
+      {data && resultType === "general" && data.results && (
+        <General results={data.results} />
+      )}
 
-            <tbody>
-              {semester.subjectsResults?.map((sub, idx) => (
-                <tr key={idx}>
-                  <td>{sub.subject.name}</td>
-                  <td>{sub.subject.subjectCode}</td>
-                  <td>{sub.subject.credits}</td>
-                  <td>{sub.consideredGrade.grade}</td>
-                  <td>{sub.consideredGrade.gradePoints}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
-
-      {data?.subjects && (
+      {data && data.subjects && (
         <>
-          <h2>{data.type} Subjects</h2>
-
-          <table border="1">
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Code</th>
-                <th>Credits</th>
-                <th>Grade</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {data.subjects.map((s, i) => (
-                <tr key={i}>
-                  <td>{s.subject.name}</td>
-                  <td>{s.subject.subjectCode}</td>
-                  <td>{s.subject.credits}</td>
-                  <td>{s.consideredGrade.grade}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {resultType === "HONORS" && <Honors subjects={data.subjects} />}
+          {resultType === "MINORS" && <Minors subjects={data.subjects} />}
         </>
       )}
     </>
