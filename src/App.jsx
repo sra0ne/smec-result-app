@@ -47,37 +47,55 @@ function App() {
   };
 
   return (
-    <>
-      <Input
-        rollNo={rollNo}
-        setRollNo={setRollNo}
-        selectedType={selectedType}
-        setSelectedType={setSelectedType}
-        getResult={getResult}
-      />
+    <div className="min-h-screen">
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <section className="max-w-4xl mx-auto px-6 py-16 md:py-24">
+        <div className="space-y-4 mb-10">
+          <h1 className="text-4xl md:text-5xl font-light tracking-tight">
+            SMEC <span className="text-accent">Results</span>
+          </h1>
+
+        </div>
+
+        <Input
+          rollNo={rollNo}
+          setRollNo={setRollNo}
+          selectedType={selectedType}
+          setSelectedType={setSelectedType}
+          getResult={getResult}
+        />
+
+        {error && (
+          <p className="text-destructive text-sm mt-4">
+            {error}
+          </p>
+        )}
+      </section>
+
 
       {data && (
-        <Details
-          student={data.student}
-          course={data.course}
-          program={data.program}
-          cgpa={data.cgpa}
-        />
+        <section className="max-w-4xl mx-auto px-6 pb-16 space-y-6">
+          <Details
+            student={data.student}
+            course={data.course}
+            program={data.program}
+            cgpa={data.cgpa}
+          />
+
+          {resultType === "general" && data.results && (
+            <General results={data.results} />
+          )}
+
+          {data.subjects && (
+            <>
+              {resultType === "HONORS" && <Honors subjects={data.subjects} />}
+              {resultType === "MINORS" && <Minors subjects={data.subjects} />}
+            </>
+          )}
+        </section>
       )}
 
-      {data && resultType === "general" && data.results && (
-        <General results={data.results} />
-      )}
-
-      {data && data.subjects && (
-        <>
-          {resultType === "HONORS" && <Honors subjects={data.subjects} />}
-          {resultType === "MINORS" && <Minors subjects={data.subjects} />}
-        </>
-      )}
-    </>
+    </div>
   );
 }
 
