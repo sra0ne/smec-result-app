@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import axios from "axios";
+import { Analytics } from "@vercel/analytics/react";
 import Input from "./components/Input";
 import Details from "./components/Details";
 import General from "./components/General";
@@ -46,6 +47,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Analytics />
       <main className="flex-1">
         <div>
           <section className="max-w-4xl mx-auto px-6 py-16 md:py-24">
