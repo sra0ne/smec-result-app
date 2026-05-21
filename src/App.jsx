@@ -14,27 +14,24 @@ function App() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
 
-  const headers = {
-    "x-api-version": "2",
-    "x-institution-code": "smec",
-    "x-tenant-id": "smec",
-  };
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  const url =
+  const baseUrl =
     selectedType === "general"
-      ? "https://api.campx.in/exams/student-results/external?examType=general"
-      : "https://api.campx.in/exams/student-results/honors-minors?examType=honorsMinors";
+      ? `${API_URL}/api/external`
+      : `${API_URL}/api/honors-minors`;
 
   const params =
-    selectedType === "general" ? { rollNo } : { rollNo, type: selectedType };
-
+    selectedType === "general"
+      ? { examType: "general", rollNo }
+      : { examType: "honorsMinors", rollNo, type: selectedType };
   const getResult = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(url, {
-        params: params,
-        headers: headers,
+      const response = await axios.get(baseUrl, {
+        params,
       });
+
       setData(response.data);
       setResultType(selectedType);
       setError("");
@@ -48,13 +45,11 @@ function App() {
 
   return (
     <div className="min-h-screen">
-
       <section className="max-w-4xl mx-auto px-6 py-16 md:py-24">
         <div className="space-y-4 mb-10">
           <h1 className="text-4xl md:text-5xl font-light tracking-tight">
             SMEC <span className="text-accent">Results</span>
           </h1>
-
         </div>
 
         <Input
@@ -65,13 +60,8 @@ function App() {
           getResult={getResult}
         />
 
-        {error && (
-          <p className="text-destructive text-sm mt-4">
-            {error}
-          </p>
-        )}
+        {error && <p className="text-destructive text-sm mt-4">{error}</p>}
       </section>
-
 
       {data && (
         <section className="max-w-4xl mx-auto px-6 pb-16 space-y-6">
@@ -94,7 +84,6 @@ function App() {
           )}
         </section>
       )}
-
     </div>
   );
 }

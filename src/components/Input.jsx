@@ -1,6 +1,12 @@
-import React from 'react';
+import React from "react";
 
-export default function Input({ rollNo, setRollNo, selectedType, setSelectedType, getResult }) {
+export default function Input({
+  rollNo,
+  setRollNo,
+  selectedType,
+  setSelectedType,
+  getResult,
+}) {
   const types = [
     { value: "general", label: "General" },
     { value: "HONORS", label: "Honors" },

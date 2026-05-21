@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function General({ results }) {
   if (!results || results.length === 0) return null;
@@ -6,7 +6,10 @@ export default function General({ results }) {
   return (
     <div className="space-y-4">
       {results.map((semester) => (
-        <div key={semester.semNo} className="border border-border rounded-lg p-6">
+        <div
+          key={semester.semNo}
+          className="border border-border rounded-lg p-6"
+        >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base font-medium tracking-tight">
               Semester {semester.semNo}
@@ -20,11 +23,21 @@ export default function General({ results }) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left text-xs font-medium text-muted py-2 pr-4">Subject</th>
-                  <th className="text-left text-xs font-medium text-muted py-2 pr-4">Code</th>
-                  <th className="text-left text-xs font-medium text-muted py-2 pr-4">Credits</th>
-                  <th className="text-left text-xs font-medium text-muted py-2 pr-4">Grade</th>
-                  <th className="text-left text-xs font-medium text-muted py-2">Points</th>
+                  <th className="text-left text-xs font-medium text-muted py-2 pr-4">
+                    Subject
+                  </th>
+                  <th className="text-left text-xs font-medium text-muted py-2 pr-4">
+                    Code
+                  </th>
+                  <th className="text-left text-xs font-medium text-muted py-2 pr-4">
+                    Credits
+                  </th>
+                  <th className="text-left text-xs font-medium text-muted py-2 pr-4">
+                    Grade
+                  </th>
+                  <th className="text-left text-xs font-medium text-muted py-2">
+                    Points
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -33,10 +46,18 @@ export default function General({ results }) {
                     key={idx}
                     className="border-b border-border/50 last:border-0"
                   >
-                    <td className="py-2 pr-4 text-foreground">{sub.subject.name}</td>
-                    <td className="py-2 pr-4 text-muted">{sub.subject.subjectCode}</td>
-                    <td className="py-2 pr-4 text-muted">{sub.subject.credits}</td>
-                    <td className="py-2 pr-4 text-foreground">{sub.consideredGrade.grade}</td>
+                    <td className="py-2 pr-4 text-foreground">
+                      {sub.subject.name}
+                    </td>
+                    <td className="py-2 pr-4 text-muted">
+                      {sub.subject.subjectCode}
+                    </td>
+                    <td className="py-2 pr-4 text-muted">
+                      {sub.subject.credits}
+                    </td>
+                    <td className="py-2 pr-4 text-foreground">
+                      {sub.consideredGrade.grade}
+                    </td>
                     <td className="py-2 ">{sub.consideredGrade.gradePoints}</td>
                   </tr>
                 ))}

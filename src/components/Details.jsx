@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function Details({ student, course, program, cgpa }) {
   if (!student) return null;
@@ -10,7 +10,9 @@ export default function Details({ student, course, program, cgpa }) {
     { label: "Branch", value: program.branchName },
   ];
 
-  cgpa ? fields.push({ label: "CGPA", value: cgpa }) : fields.push({ label: "CGPA", value: "N/A" });
+  cgpa
+    ? fields.push({ label: "CGPA", value: cgpa })
+    : fields.push({ label: "CGPA", value: "N/A" });
 
   return (
     <div className="border border-border rounded-lg p-6">
