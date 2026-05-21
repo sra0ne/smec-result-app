@@ -6,6 +6,7 @@ import Details from "./components/Details";
 import General from "./components/General";
 import Honors from "./components/Honors";
 import Minors from "./components/Minors";
+import Footer from "./components/Footer";
 
 function App() {
   const [rollNo, setRollNo] = useState("");
@@ -44,46 +45,55 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen">
-      <section className="max-w-4xl mx-auto px-6 py-16 md:py-24">
-        <div className="space-y-4 mb-10">
-          <h1 className="text-4xl md:text-5xl font-light tracking-tight">
-            SMEC <span className="text-accent">Results</span>
-          </h1>
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-1">
+        <div>
+          <section className="max-w-4xl mx-auto px-6 py-16 md:py-24">
+            <div className="space-y-4 mb-10">
+              <h1 className="text-4xl md:text-5xl font-light tracking-tight">
+                SMEC <span className="text-accent">Results</span>
+              </h1>
+            </div>
+
+            <Input
+              rollNo={rollNo}
+              setRollNo={setRollNo}
+              selectedType={selectedType}
+              setSelectedType={setSelectedType}
+              getResult={getResult}
+            />
+
+            {error && <p className="text-destructive text-sm mt-4">{error}</p>}
+          </section>
+
+          {data && (
+            <section className="max-w-4xl mx-auto px-6 pb-16 space-y-6">
+              <Details
+                student={data.student}
+                course={data.course}
+                program={data.program}
+                cgpa={data.cgpa}
+              />
+
+              {resultType === "general" && data.results && (
+                <General results={data.results} />
+              )}
+
+              {data.subjects && (
+                <>
+                  {resultType === "HONORS" && (
+                    <Honors subjects={data.subjects} />
+                  )}
+                  {resultType === "MINORS" && (
+                    <Minors subjects={data.subjects} />
+                  )}
+                </>
+              )}
+            </section>
+          )}
         </div>
-
-        <Input
-          rollNo={rollNo}
-          setRollNo={setRollNo}
-          selectedType={selectedType}
-          setSelectedType={setSelectedType}
-          getResult={getResult}
-        />
-
-        {error && <p className="text-destructive text-sm mt-4">{error}</p>}
-      </section>
-
-      {data && (
-        <section className="max-w-4xl mx-auto px-6 pb-16 space-y-6">
-          <Details
-            student={data.student}
-            course={data.course}
-            program={data.program}
-            cgpa={data.cgpa}
-          />
-
-          {resultType === "general" && data.results && (
-            <General results={data.results} />
-          )}
-
-          {data.subjects && (
-            <>
-              {resultType === "HONORS" && <Honors subjects={data.subjects} />}
-              {resultType === "MINORS" && <Minors subjects={data.subjects} />}
-            </>
-          )}
-        </section>
-      )}
+      </main>
+      <Footer />
     </div>
   );
 }
