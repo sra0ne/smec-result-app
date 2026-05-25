@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import axios from "axios";
+import { Analytics } from "@vercel/analytics/react";
 import Input from "./components/Input";
 import Details from "./components/Details";
 import General from "./components/General";
@@ -107,6 +108,7 @@ function App() {
         </div>
       </main>
       <Footer />
+      <Analytics />
     </div>
   );
 }
