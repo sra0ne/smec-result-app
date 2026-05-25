@@ -15,7 +15,7 @@ export default function General({ results }) {
               Semester {semester.semNo}
             </h3>
             <span className="text-xs px-3 py-1 bg-secondary text-accent rounded-lg border border-border">
-              SGPA: {semester.sgpa}
+              SGPA: {semester.sgpa ?? "N/A"}
             </span>
           </div>
 
@@ -55,7 +55,9 @@ export default function General({ results }) {
                     <td className="py-2 pr-4 text-muted">
                       {sub.subject.credits}
                     </td>
-                    <td className="py-2 pr-4 text-foreground">
+                    <td
+                      className={`py-2 pr-4 font-medium ${sub.consideredGrade.grade === "F" ? "text-destructive" : "text-foreground"}`}
+                    >
                       {sub.consideredGrade.grade}
                     </td>
                     <td className="py-2 ">{sub.consideredGrade.gradePoints}</td>

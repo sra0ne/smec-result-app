@@ -31,6 +31,8 @@ function App() {
   const getResult = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setData(null);
+    setResultType("");
     try {
       const response = await axios.get(baseUrl, {
         params,

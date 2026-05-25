@@ -35,7 +35,9 @@ export default function Minors({ subjects }) {
                   {s.subject.subjectCode}
                 </td>
                 <td className="py-2 pr-4 text-muted">{s.subject.credits}</td>
-                <td className="py-2 text-foreground">
+                <td
+                  className={`py-2 font-medium ${s.consideredGrade.grade === "F" ? "text-destructive" : "text-foreground"}`}
+                >
                   {s.consideredGrade.grade}
                 </td>
               </tr>
