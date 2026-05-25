@@ -8,14 +8,14 @@ export default async function handler(req, res) {
   const origin = req.headers.origin;
 
   const isAllowed =
+    !origin ||
     origin === process.env.ALLOWED_ORIGIN ||
-    origin === process.env.ALLOWED_ORIGIN1 ||
-    origin === "http://localhost:5173";
+    origin === process.env.ALLOWED_ORIGIN1;
 
   if (isAllowed) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  } else if (!origin) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    if (origin) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+    }
   } else {
     return res.status(403).json({ error: "Not allowed" });
   }

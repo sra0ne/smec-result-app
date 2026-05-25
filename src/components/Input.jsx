@@ -6,6 +6,7 @@ export default function Input({
   selectedType,
   setSelectedType,
   getResult,
+  loading,
 }) {
   const types = [
     { value: "general", label: "General" },
@@ -27,9 +28,10 @@ export default function Input({
 
         <button
           type="submit"
-          className="bg-accent text-accent-fg font-medium text-sm px-6 py-2.5 rounded-[6px] hover:opacity-90 cursor-pointer"
+          disabled={loading}
+          className="bg-accent text-accent-fg font-medium text-sm px-6 py-2.5 rounded-[6px] hover:opacity-90 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Get Result
+          {loading ? "Loading.." : "Get Result"}
         </button>
       </div>
 

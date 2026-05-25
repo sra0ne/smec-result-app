@@ -14,6 +14,7 @@ function App() {
   const [resultType, setResultType] = useState("");
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -28,6 +29,7 @@ function App() {
       : { examType: "honorsMinors", rollNo, type: selectedType };
   const getResult = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.get(baseUrl, {
         params,
@@ -37,10 +39,20 @@ function App() {
       setResultType(selectedType);
       setError("");
     } catch (err) {
-      setError("Failed to fetch result");
+      let errorMessage = "Failed to fetch result";
+
+      if (err.response?.data?.statusCode === 401) {
+        errorMessage = "Session expired,please try again later";
+      } else if (err.response?.data?.statusCode === 404) {
+        errorMessage = "Student doesn't exist";
+      }
+
+      setError(errorMessage);
       console.log(err);
       setData(null);
       setResultType("");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,6 +73,7 @@ function App() {
               selectedType={selectedType}
               setSelectedType={setSelectedType}
               getResult={getResult}
+              loading={loading}
             />
 
             {error && <p className="text-destructive text-sm mt-4">{error}</p>}
